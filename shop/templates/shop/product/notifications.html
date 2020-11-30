@@ -1,0 +1,9 @@
+{% for notification in notifications %}
+  <div class="notify" style="border: 1px solid lightblue; background-color: lightgray; text-align: left; padding: 3px; margin-bottom: 5px;">
+    {% if notification.seen == False %}
+    <h5 style="text-style: bold; color: red;">{{notification.date}}<br><hr style="width: 25%; float: left;"><br><br>{{notification.text}}</h5>
+    {% else %}
+    <h5>{{notification.date}}<br><hr style="width: 25%; float: left;"><br><br>{{notification.text}}</h5>
+    {% endif %}
+  </div>
+{% endfor %}

@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+ Invoice List
+{% endblock %}
+
+{% block content %}
+
+  <div id="main" class="product-list" >
+    <h1>All Invoices</h1>
+    {% for order in orders %}
+      <div class="item" style="border: 1px solid lightblue; background-color: lightgray; text-align: left; padding: 5px; margin-bottom: 5px;">
+        <h5>ID: {{ order.hellocash_id }}</h5>
+        <h5>Customer Name: {{ order.full_name }}</h5>
+        <h5>Phone: {{ order.phone }}</h5>
+        <h5>TraceNumber: {{ order.tracenumber }}</h5>
+        <h5>Amount: {{ order.get_total_cost }} ETB</h5>
+        <h5>Status: {{order.status}}</h5>
+        <h5>Expires: {{order.expires}}</h5>
+
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

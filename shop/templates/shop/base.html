@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Robera Super Market{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <script src="{% static "js/jquery-3.3.1.min.js" %}"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+    var reset = false;
+    function unseencount(){
+    url = "/notifications/unseencount/";
+    $.ajax({
+         url: url,
+
+         success: function(response) {
+           if(response){
+              console.log(response)
+              if(response.unseen > 0){
+
+               $('#notification').html("("+ response.unseen +") Notifications");
+               $('#notification').css("color","red");
+
+             }else{
+               $('#notification').html("Notifications");
+               $('#notification').css("color","#5993bb");
+             }
+           }
+         },
+         complete:function(data){
+              if(reset){
+                reset = false;
+                return;
+              }
+              else{
+              setTimeout(unseencount,5000);
+            }
+            },
+
+         error: function(e, x, r) {
+             //alert("Error getting Message!");
+         }
+
+     });
+
+    }
+
+    $(document).ready(function(){
+        unseencount();
+        //setInterval(updatecomments, 3000);
+
+    });
+    </script>
+
+
+
+
+    <div id="header">
+      <a href="/" class="logo">Robera Super Market</a>
+
+      <a href="/invoices/" style="float: right;  margin-left: 5px; margin-right: 5px;">Invoices </a>
+      <a href="/transfers/" style="float: right; margin-left: 5px; margin-right: 5px;">Transfers</a>
+      <a id="notification" href="/notifications/" style="float: right;  margin-left: 5px; margin-right: 5px;">Notifications </a>
+    </div>
+    <div id="subheader">
+      <div class="cart">
+        {% with total_items=cart|length %}
+          {% if total_items > 0 %}
+            Your cart:
+            <a href="{% url "cart:cart_detail" %}">
+              {{ total_items }} item{{ total_items|pluralize }},
+              ${{ cart.get_total_price }}
+            </a>
+          {% else %}
+            Your cart is empty.
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+ Notifications
+{% endblock %}
+
+{% block content %}
+<script src="{% static "js/jquery-3.3.1.min.js" %}"></script>
+<script type="text/javascript">
+var reset = false;
+var count = parseInt('{{notifications.count}}');
+
+
+function retrivenotifications(){
+url = "/notifications/retrive/";
+$.ajax({
+     url: url,
+     data: {'count': count},
+
+
+     success: function(response) {
+       if(response){
+          console.log(response)
+          if(response.count > count){
+          var old = $('#box').html();
+           $('#box').html(response.html + old);
+            count = response.count;
+           //$("#box").scrollTop(after - position);
+         }
+       }
+     },
+     complete:function(data){
+          if(reset){
+            reset = false;
+            return;
+          }
+          else{
+          setTimeout(retrivenotifications,5000);
+        }
+        },
+
+     error: function(e, x, r) {
+         //alert("Error getting Message!");
+     }
+
+ });
+
+}
+
+$(document).ready(function(){
+    retrivenotifications();
+    //setInterval(updatecomments, 3000);
+
+});
+
+</script>
+
+
+  <div id="main" class="product-list" >
+    <h1>Notifications</h1>
+    <div id="box">
+    {% for notification in notifications %}
+      <div class="notify" style="border: 1px solid lightblue; background-color: lightgray; text-align: left; padding: 3px; margin-bottom: 5px;">
+        {% if notification.seen == False %}
+        <h5 style="text-style: bold; color: red;">{{notification.date}}<br><hr style="width: 25%; float: left;"><br><br>{{notification.text}}</h5>
+        {% else %}
+        <h5>{{notification.date}}<br><hr style="width: 25%; float: left;"><br><br>{{notification.text}}</h5>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+{% endblock %}

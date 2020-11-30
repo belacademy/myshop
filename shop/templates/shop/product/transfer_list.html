@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+ Transfer List
+{% endblock %}
+
+{% block content %}
+
+  <div id="main" class="product-list" >
+    <h1>All Transfers</h1>
+    {% for transfer in transfers %}
+      <div class="item" style="border: 1px solid lightblue; background-color: lightgray; text-align: left; padding: 5px; margin-bottom: 5px;">
+        <h5>ID: {{transfer.id}}</h5>
+        <h5>From: {{ transfer.fromname }}</h5>
+        <h5>Sender Account: {{ transfer.fromaccount }}</h5>
+        <h5>To: {{ transfer.toname }}</h5>
+        <h5>Receiver Account: {{ transfer.toaccount }}</h5>
+        <h5>Amount: {{ transfer.amount }} ETB</h5>
+        <h5>Status: {{transfer.status}}</h5>
+        <h5>ProcessDate: {{transfer.processdate}}</h5>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
